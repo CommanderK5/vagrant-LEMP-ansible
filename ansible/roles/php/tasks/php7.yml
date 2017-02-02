@@ -1,0 +1,22 @@
+---
+- name: PHP7 | Installing PHP7 repo deb
+  apt_repository:
+    repo: ppa:ondrej/php
+    update_cache: yes
+
+- name: PHP7 | Installing PHP7 package
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+     - php7.0
+     - php7.0-common
+
+- name: PHP7 | Installing PHP7 extensions/libraries
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+     - php7.0-xml
+     - php7.0-curl
+     - php7.0-ldap
+     - php7.0-mbstring
+     - php7.0-mcrypt
+     - php7.0-mysql
+     - php-redis

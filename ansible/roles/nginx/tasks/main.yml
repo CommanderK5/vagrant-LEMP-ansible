@@ -1,0 +1,38 @@
+---
+- name: NGINX | Installing NGINX repo deb
+  apt_repository:
+    repo: deb http://nginx.org/packages/ubuntu/ trusty nginx
+    state: present
+    update_cache: yes
+
+- name: NGINX | Installing NGINX repo apt key
+  apt_key:
+    url: http://nginx.org/keys/nginx_signing.key
+    state: present
+
+- name: NGINX | Installing NGINX
+  apt:
+    name: nginx
+    state: latest
+    update_cache: yes
+
+- name: NGINX | Starting NGINX
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: NGINX | Removing NGINX default site
+  file:
+    path: /etc/nginx/conf.d/default.conf
+    state: absent
+  notify: restart nginx
+
+- name: NGINX | Configure NGINX
+  copy:
+    src: files/php.conf
+    dest: /etc/nginx/conf.d/php.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart nginx

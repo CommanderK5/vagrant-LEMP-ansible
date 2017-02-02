@@ -1,0 +1,11 @@
+---
+- name: NODEJS | Install NODEJS PPA
+  shell: curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+  args:
+    creates: /etc/apt/sources.list.d/nodesource.list
+
+- name: NODEJS | Installing NODEJS
+  apt:
+    name: nodejs
+    state: latest
+    update_cache: yes

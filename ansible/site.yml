@@ -1,0 +1,10 @@
+---
+ - name: Install all packages and dependencies for app
+   hosts: lemp
+   sudo : true
+   roles:
+     - nginx
+     - php
+     - redis
+     - nodejs
+     - mysql

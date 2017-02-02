@@ -1,0 +1,39 @@
+---
+- name: PHP7-FPM | Installing PHP7-FPM package
+  apt:
+    name: php7.0-fpm
+    state: present
+    update_cache: yes
+
+- name: PHP7-FPM | Starting NGINX
+  service:
+    name: php7.0-fpm
+    state: started
+    enabled: yes
+
+- name: PHP7-FPM | Ensure php7-fpm cgi.fix_pathinfo=0
+  replace:
+    dest: /etc/php/7.0/fpm/php.ini
+    regexp: ;cgi.fix_pathinfo=1
+    replace: cgi.fix_pathinfo=0
+  notify:
+    - restart php7-fpm
+    - restart nginx
+
+- name: PHP7-FPM | Ensure php7-fpm socket user permissions
+  replace:
+    dest: /etc/php/7.0/fpm/pool.d/www.conf
+    regexp: listen.owner = www-data
+    replace: listen.owner = nginx
+  notify:
+    - restart php7-fpm
+    - restart nginx
+
+- name: PHP7-FPM | Ensure php7-fpm socket group permissions
+  replace:
+    dest: /etc/php/7.0/fpm/pool.d/www.conf
+    regexp: listen.group = www-data
+    replace: listen.group = nginx
+  notify:
+    - restart php7-fpm
+    - restart nginx

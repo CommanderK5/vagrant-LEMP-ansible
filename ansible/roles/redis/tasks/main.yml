@@ -1,0 +1,11 @@
+---
+- name: REDIS | Installing REDIS
+  apt:
+    pkg: redis-server
+    state: latest
+
+- name: REDIS | Starting REDIS
+  service:
+    name: redis-server
+    state: started
+    enabled: yes

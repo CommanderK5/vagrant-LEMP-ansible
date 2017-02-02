@@ -1,0 +1,33 @@
+---
+- name: MYSQL | Set MySQL root password before installing
+  debconf: name='mysql-server' question='mysql-server/root_password' value='Password' vtype='password'
+
+- name: MYSQL | Set the confirm MySQL root password before installing
+  debconf: name='mysql-server' question='mysql-server/root_password_again' value='Password' vtype='password'
+
+- name: MYSQL | Install MySQL packages
+  apt:  name=mysql-server state=installed
+
+- name: MYSQL | Starting MYSQL
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: MYSQL | Ensure MYSQL is listening on all interfaces
+  replace:
+    dest: /etc/mysql/my.cnf
+    regexp: '\.*127.0.0.1'
+    replace: '0.0.0.0'
+  notify: restart mysql
+
+- name: MYSQL | Create dummy db and table
+  copy:
+    src: files/example_db.sql
+    dest: /tmp/example_db.sql
+    owner: root
+    group: root
+    mode: 0755
+
+- name: MYSQL | Exec sql script
+  shell: mysql -u root -pPassword < /tmp/example_db.sql
