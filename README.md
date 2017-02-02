@@ -9,16 +9,16 @@ Includes:
 - Redis
 
 
-OS:
+OS
 ```Ubuntu 14.04```
 
-PHP:
+PHP
 ```PHP-7.0```
 
-Nodejs:
+Nodejs
 ```v6.9.5```
 
-Run:
+Run
 ```vagrant up```
 
 phpinfo
